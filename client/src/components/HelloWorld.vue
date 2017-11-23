@@ -41,12 +41,14 @@ export default {
       }
     },
     mixThis() {
-      mixIngredients(this.selectedIngredients[0],this.selectedIngredients[1],this.selectedIngredients[2]).then(r=>this.result=r)
+      mixIngredients(this.selectedIngredients[0],this.selectedIngredients[1],this.selectedIngredients[2]).then(r=>{
+        this.result=r
+        getInventory().then(r=>this.inventory=r.inventory)
+      })
     }
   },
   created() {
     getInventory().then(r=>{
-      console.log(r.inventory)
       this.inventory=r.inventory
   })
   }

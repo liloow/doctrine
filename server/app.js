@@ -12,8 +12,7 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 if (process.env.NODE_ENV === 'DEV') {
-	app.use(
-		cors({
+	app.use(cors({
 			origin: "http://localhost:8080"
 		})
 	);
@@ -50,5 +49,7 @@ app.use((err, req, res, next) => {
 					}
 	});
 });
+
+console.log(process.env.NODE_ENV)
 
 module.exports = app;

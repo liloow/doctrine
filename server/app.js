@@ -1,3 +1,5 @@
+require('dotenv').config()
+const history = require('express-history-api-fallback')
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
@@ -9,15 +11,22 @@ const app = express();
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(
-	cors({
-		origin: "http://localhost:8080"
-	})
-);
+if (process.env.NODE_ENV === 'DEV') {
+	app.use(
+		cors({
+			origin: "http://localhost:8080"
+		})
+	);
+}
 
 const index = require("./routes/index");
 
 app.use("/api", index);
+
+const clientRoot = path.join(__dirname, '../client/dist');
+app.use('/', express.static(clientRoot))
+app.use(history('index.html', { root: clientRoot }))
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

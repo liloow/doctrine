@@ -2,7 +2,7 @@
 <section>
   <div>
     <ul>
-      <li v-for="item in inventory"><button type="button" @click='selectItem(item.name)'>{{item.name}} // In stock : {{item.amount}}</button></li>
+      <li v-for="item in inventory"><button type="button" :disabled="item.amount<=0?true:false" @click='selectItem(item.name)'>{{item.name}} // In stock : {{item.amount}}</button></li>
     </ul>
       <pre>
         {{selectedIngredients}}  

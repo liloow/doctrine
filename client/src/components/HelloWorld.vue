@@ -31,9 +31,11 @@ export default {
   methods: {
     selectItem(ingredient) {
       this.error = null
-      if (this.selectedIngredients.length===3) return this.error='Il y a deja 3 ingredients dans le chaudron, retirez-en un si vous voulez ajouter ' + ingredient
       const index = this.selectedIngredients.indexOf(ingredient)
-      if(index===-1) this.selectedIngredients.push(ingredient)
+      if(index===-1) {
+        if (this.selectedIngredients.length===3) return this.error='Il y a deja 3 ingredients dans le chaudron, retirez-en un si vous voulez ajouter ' + ingredient
+        this.selectedIngredients.push(ingredient)
+      }
       else{
         this.selectedIngredients.splice(index,1)
       }

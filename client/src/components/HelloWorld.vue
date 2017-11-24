@@ -26,8 +26,7 @@
     <p v-if='error'><strong>{{error}}</strong></p>
     <button class="button" :disabled="selectedIngredients.length===3?false:true" @click="mixThis">Concocter la potion</button>
     <div class="row">
-    <h3 class="title is-4" v-if="result">{{result}}</h3>
-    </div>
+      <h3 class="title is-4" v-if="result">{{result}}</h3> </div>
   </section>
 </template>
 <script>

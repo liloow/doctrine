@@ -11,8 +11,6 @@ router.get("/", function(req, res, next) {
 	res.json(labData);
 });
 
-
-// Immediately send 429 header to client when rate limiting is in effect
    
 router.post("/mix", function(req, res, next) {
 
@@ -54,16 +52,16 @@ router.post("/mix", function(req, res, next) {
 		!fullIngredientThree
 	) return res.json("Un ou plusieurs ingredients envoye n'existe pas !")
 
-		const mixtureResult = lab.mix([																	// IF PASSED ALL SAFETY BARRIERS TRY AND MAKE THE POTION
-			fullIngredientOne,
-			fullIngredientTwo,
-			fullIngredientThree
-		]);
 
 limiter.removeTokens(1, function(err, remainingRequests) {
   if (remainingRequests < 1) {
     res.json('429 Too Many Requests - Il y a trop de requêtes provenant de votre IP, merci de patienter 1 seconde avant de recommencer'); // PREVENT API FLOODING
   } else {
+		const mixtureResult = lab.mix([																	// IF PASSED ALL SAFETY BARRIERS TRY AND MAKE THE POTION
+			fullIngredientOne,
+			fullIngredientTwo,
+			fullIngredientThree
+		]);
 		res.json(mixtureResult);
   }
 });

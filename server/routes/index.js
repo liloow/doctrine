@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const lab = require("../index");
+const RateLimiter = require('limiter').RateLimiter;
+const limiter = new RateLimiter(2, 'second');
 
 router.get("/", function(req, res, next) {
 	const labData = {
@@ -9,6 +11,9 @@ router.get("/", function(req, res, next) {
 	res.json(labData);
 });
 
+
+// Immediately send 429 header to client when rate limiting is in effect
+   
 router.post("/mix", function(req, res, next) {
 
 	if (																				// CHECK IF EVERY INGREDIENT HAS BEEN PASSED AND ONLY TAKE THE FIRST THREE IN CASE OF TAMPERING
@@ -55,7 +60,13 @@ router.post("/mix", function(req, res, next) {
 			fullIngredientThree
 		]);
 
+limiter.removeTokens(1, function(err, remainingRequests) {
+  if (remainingRequests < 1) {
+    res.json('429 Too Many Requests - Il y a trop de requêtes provenant de votre IP, merci de patienter 1 seconde avant de recommencer'); // PREVENT API FLOODING
+  } else {
 		res.json(mixtureResult);
+  }
+});
 	} else {																										// FALLBACK IN CASE OF TAMPERING
 		return next("Un ingredient doit toujours etre defini");
 	}
